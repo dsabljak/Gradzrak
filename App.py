@@ -23,7 +23,7 @@ class App(Frame):
         
         self.gasCombobox = ttk.Combobox(self.R, textvariable = self.gas, values = gasList, state = "readonly")
         self.gasCombobox.grid(row = 1, column = 0)
-        self.gas.set(gasList[0])
+        self.gas.set(gasList[1])
 
         Label(text = "Select town").grid(row = 3, column = 0)
 
