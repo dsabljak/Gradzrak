@@ -1,3 +1,5 @@
+## Class which gets parameters from GUI and formats them into filter
+
 import requests
 from datetime import date
 from DataFile import DataFile

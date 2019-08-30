@@ -1,3 +1,6 @@
+##App for pulling Copernicus data from the Hub using parameters which the user
+##puts. Currently working for Sentinel5P
+
 from tkinter import *
 from tkinter import ttk
 from DataCollector import DataCollector
