@@ -83,5 +83,8 @@ class App(Frame):
         if int(month) > 12 or int(month) < 1:
             return False
         return True
+
+    def postoji(self):
+        return 
 root = Tk()
 app = App(root)
