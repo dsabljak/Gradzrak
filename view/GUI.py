@@ -125,7 +125,7 @@ class App(Frame):
             
         download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url)
         
-        #print(self.town.get())
+        #print(self.town.get())>
         #print(self.date.get())
         return
 
@@ -164,3 +164,4 @@ class App(Frame):
     
 root = Tk()
 app = App(root)
+root.mainloop()
