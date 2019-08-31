@@ -4,15 +4,17 @@ import requests
 from datetime import date
 from DataFile import DataFile
 url    = "https://s5phub.copernicus.eu/dhus/odata/v1/Products"
-user    = "s5pguest"
-passw = "s5pguest"
+
 
 class DataCollector:
-    def __init__(self, gas, town, date):
+    def __init__(self, gas, town, date, login):
         self.gas = gas
         self.coords = self.getCoordsFromTown(town)
         self.date = self.makeDate(date)
+        self.user = login[0]
+        self.passw = login[1]
         self.download()
+        
         return
 
     def download(self):
@@ -21,7 +23,7 @@ class DataCollector:
         skip = 0
         while brojac != 1:
             
-            req = requests.get(url, auth=(user, passw), params={'$format': 'json' , '$filter': filterString, '$skip': skip})
+            req = requests.get(url, auth=(self.user, self.passw), params={'$format': 'json' , '$filter': filterString, '$skip': skip})
             print(req.status_code)
             js = req.json()
             #print(len(js['d']['results']))
