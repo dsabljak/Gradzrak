@@ -40,11 +40,20 @@ class DataCollector:
                     print(file.id)
                     print(file.name)
                     print(file.polygon.polygonCoordinates)
+                    print(str(file.size) + 'MB')
                     break
                     
                     #print(i, file = open('ispis.txt', 'w'))
                 #print("Idem dalje..")
             skip += 50
+
+        downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
+        if file.size > 45:
+            print("Prevelik file")
+        else: 
+            with open(f"downloaded_data/{file.name}.nc", "wb") as fout:
+                fout.write(downloadreq.content)
+                print("Skinuto!")
     
 ##        print(file.id)
 ##        print(file.name)
