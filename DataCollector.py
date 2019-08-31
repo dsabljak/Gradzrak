@@ -19,7 +19,7 @@ class DataCollector:
         filterString = self.makeFilterString(self.gas, self.date)
         brojac = 0
         skip = 0
-        while brojac != 3:
+        while brojac != 1:
             
             req = requests.get(url, auth=(user, passw), params={'$format': 'json' , '$filter': filterString, '$skip': skip})
             print(req.status_code)
@@ -37,6 +37,8 @@ class DataCollector:
                     print(file.id)
                     print(file.name)
                     print(file.polygon.polygonCoordinates)
+                    break
+                    
                     #print(i, file = open('ispis.txt', 'w'))
                 #print("Idem dalje..")
             skip += 50
@@ -68,4 +70,4 @@ class DataCollector:
 
     def getCoordsFromTown(self, town):
         
-        return [45.123, 15.984]
+        return [45.815399, 15.966568]

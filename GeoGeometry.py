@@ -43,6 +43,7 @@ class Gml:
     
     ##Function for checking if the given coordinate is inside of the polygon
     def coordInsidePolygon(self, lat, long):
+
         point = Point(lat, long)
         if self.checkAntiMeridian(self.polygonCoordinates):
             polygon1, polygon2 = self.splitPolygon(self.polygonCoordinates)
