@@ -28,9 +28,9 @@ class DataCollector:
             #print(js['d']['results'], file = open('ispis.txt', 'w'))
             res = js['d']['results']
             
-            for i in range(1):
-                file = DataFile(res[8])
-                print(i)
+            for i in range(len(res)):
+                file = DataFile(res[i])
+           
                 if file.polygon.coordInsidePolygon(self.coords[0], self.coords[1]):
                     downloadLink = file.value
                     brojac += 1
@@ -41,9 +41,9 @@ class DataCollector:
                 #print("Idem dalje..")
             skip += 50
     
-        print(file.id)
-        print(file.name)
-        print(file.polygon.polygonCoordinates)
+##        print(file.id)
+##        print(file.name)
+##        print(file.polygon.polygonCoordinates)
 ##        req = requests.get(url, auth=(user, passw), params={'$format': 'json' , '$filter': filterString, '$skip': 49})
 ##        print(req.status_code)
 ##        js = req.json()
