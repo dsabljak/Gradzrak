@@ -6,6 +6,9 @@ from tkinter import ttk
 from DataCollector import DataCollector
 from functools import partial
 
+url1    = "https://s5phub.copernicus.eu/dhus/odata/v1/Products"
+url2    = "https://scihub.copernicus.eu/apihub/odata/v1/Products"
+
 s5pLogin = ("s5pguest", "s5pguest")
 s123Login = ("dsabljak", "Jabuka!=42")
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -115,10 +118,12 @@ class App(Frame):
         print(self.product.get())
         if self.selectedSentinel in ['S1', 'S2', 'S3']:
             auth = s123Login
+            url = url2
         else:
             auth = s5pLogin
+            url = url1
             
-        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth)
+        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url)
         
         #print(self.town.get())
         #print(self.date.get())
