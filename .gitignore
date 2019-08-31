@@ -1,9 +1,6 @@
 App.sublime-workspace
-.vscode/settings.json
-.vscode/launch.json
-__pycache__/DataCollector.cpython-36.pyc
-__pycache__/DataFile.cpython-36.pyc
-__pycache__/GeoGeometry.cpython-36.pyc
+.vscode
+__pycache__
 main.py
 ispis.txt
 testovi/
