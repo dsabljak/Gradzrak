@@ -1,7 +1,7 @@
 ##App for pulling Copernicus data from the Hub using parameters which the user
 ##puts. Currently working for Sentinel5P
 
-import tkinter
+from tkinter import *
 from tkinter import ttk
 from DataCollector import DataCollector
 
@@ -9,36 +9,38 @@ numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 gasList = ["CO2", "CO"] 
 townList = ["Zagreb", "Split", "Osijek", "Rijeka"]
 
-class App(tkinter.Frame):
+class App(Frame):
     def __init__(self, root):
         super().__init__(root)
         self.R = root
         self.R.title("Graf")
         self.grid()
+     
         self.makeGUI()
 
+    
     def makeGUI(self):
-        tkinter.Label(text = "Select gas").grid(row = 0, column = 0)
+        Label(text = "Select gas").grid(row = 0, column = 0)
 
-        self.gas = tkinter.StringVar()
-        self.town = tkinter.StringVar()
-        self.date = tkinter.StringVar(value = "dd.mm.yyyy")
+        self.gas = StringVar()
+        self.town = StringVar()
+        self.date = StringVar(value = "dd.mm.yyyy")
         
         self.gasCombobox = ttk.Combobox(self.R, textvariable = self.gas, values = gasList, state = "readonly")
         self.gasCombobox.grid(row = 1, column = 0)
         self.gas.set(gasList[1])
 
-        tkinter.Label(text = "Select town").grid(row = 3, column = 0)
+        Label(text = "Select town").grid(row = 3, column = 0)
 
         self.townCombobox = ttk.Combobox(self.R, textvariable = self.town, values = townList, state = "readonly")
         self.townCombobox.grid(row = 4, column = 0)
         self.town.set(townList[0])
 
-        tkinter.Label(text = "Select date").grid(row = 5, column = 0)
-        self.dateEntry = tkinter.Entry(self.R, textvariable = self.date)
+        Label(text = "Select date").grid(row = 5, column = 0)
+        self.dateEntry = Entry(self.R, textvariable = self.date)
         self.dateEntry.grid(row = 6, column = 0)
         
-        self.okayButton = tkinter.Button(self.R, text = "Done", command = self.getData)
+        self.okayButton = Button(self.R, text = "Done", command = self.getData)
         self.okayButton.grid(row = 7, column = 0)
         
         
@@ -50,7 +52,6 @@ class App(tkinter.Frame):
         print(self.gas.get())
         download = DataCollector(self.gas.get(), self.town.get(), self.date.get())
         
-        print(download)
         #print(self.town.get())
         #print(self.date.get())
         return
@@ -68,7 +69,7 @@ class App(tkinter.Frame):
         year = date[2]
 
         if len(day) != 2 or len(month) != 2 or len(year) != 4:
-            return False
+            return false
         for i in day:
                 if i not in numbers:
                     return False
@@ -86,7 +87,7 @@ class App(tkinter.Frame):
         return True
 
     def postoji(self):
-        return 
-root = tkinter.Tk()
+        return
+    
+root = Tk()
 app = App(root)
-root.mainloop()
