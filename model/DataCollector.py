@@ -7,13 +7,14 @@ from Gradzrak.model.DataFile import DataFile
 
 
 class DataCollector:
-    def __init__(self, gas, town, date, login, url):
+    def __init__(self, gas, town, date, login, url, selectedSentinel):
         self.gas = gas
         self.coords = self.getCoordsFromTown(town)
         self.date = self.makeDate(date)
         self.user = login[0]
         self.passw = login[1]
         self.url = url
+        self.selectedSentinel = selectedSentinel
         self.download()
         
         return
@@ -48,10 +49,16 @@ class DataCollector:
             skip += 50
 
         downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
-        if file.size > 45:
+        if self.selectedSentinel == 'S5P':
+            fileType = '.nc'
+        else:
+            fileType = '.zip'
+            
+        if file.size > 200:
             print("Prevelik file")
-        else: 
-            with open(f"downloaded_data/{file.name}.nc", "wb") as fout:
+        else:    
+            with open(f"../downloaded_data/{file.name}{fileType}", "wb") as fout:
+                print("Zapocinjem skidanje")
                 fout.write(downloadreq.content)
                 print("Skinuto!")
     

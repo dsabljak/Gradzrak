@@ -1,5 +1,5 @@
 ##App for pulling Copernicus data from the Hub using parameters which the user
-##puts. Currently working for Sentinel5P
+##puts. 
 
 from tkinter import *
 from tkinter import ttk
@@ -32,7 +32,7 @@ class App(Frame):
     def __init__(self, root):
         super().__init__(root)
         self.R = root
-        self.selectedSentinel = ''
+        self.selectedSentinel = 'S1'
         self.R.title("Graf")
         self.grid()
      
@@ -61,7 +61,7 @@ class App(Frame):
         
         self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = s5pproductList, state = "readonly")
         self.productCombobox.grid(row = 3, column = 0, columnspan = 5)
-        self.product.set(s5pproductList[0])
+        self.product.set(s1productList[0])
 
         Label(text = "Select town").grid(row = 4, column = 0, columnspan = 5)
 
@@ -112,7 +112,7 @@ class App(Frame):
     def getData(self, e = None):
         if not self.checkDate():
             print("Wrong format")
-            exit()
+            return
 
         print(self.product.get())
         if self.selectedSentinel in ['S1', 'S2', 'S3']:
@@ -122,10 +122,8 @@ class App(Frame):
             auth = s5pLogin
             url = url1
             
-        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url)
+        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url, self.selectedSentinel)
         
-        #print(self.town.get())>
-        #print(self.date.get())
         return
 
     def checkDate(self):
