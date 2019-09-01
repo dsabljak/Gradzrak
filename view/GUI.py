@@ -12,7 +12,6 @@ url2    = "https://scihub.copernicus.eu/apihub/odata/v1/Products"
 s5pLogin = ("s5pguest", "s5pguest")
 s123Login = ("dsabljak", "Jabuka!=42")
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-cx
 gasList = ["CO2", "CO"]
 
 s1productList = ["SLC", "GRD", "OCN"]
