@@ -1,0 +1,7 @@
+omogućiti biranje s5 ili ostalih - OK
+provjera koordinata -  nije skroz OK, bug je postojan
+prosirenje skupa plinova / stvari - OK 
+skidanje podataka - OK
+obrada podataka
+lijepota
+
