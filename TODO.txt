@@ -3,4 +3,4 @@ provjera koordinata -  nije skroz OK, bug je postojan
 prosirenje skupa plinova / stvari - OK 
 skidanje podataka - OK
 obrada podataka
-
+ljepota
