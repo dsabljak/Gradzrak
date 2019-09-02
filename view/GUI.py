@@ -30,6 +30,7 @@ townList = ["Zagreb", "Split", "Osijek", "Rijeka"]
 
 class App(Frame):
     def __init__(self, root):
+        
         super().__init__(root)
         self.R = root
         self.selectedSentinel = 'S1'
@@ -58,8 +59,10 @@ class App(Frame):
         self.product = StringVar()
         self.town = StringVar()
         self.date = StringVar(value = "dd.mm.yyyy")
+        self.lat = StringVar()
+        self.long = StringVar()
         
-        self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = s5pproductList, state = "readonly")
+        self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = s1productList, state = "readonly")
         self.productCombobox.grid(row = 3, column = 0, columnspan = 5)
         self.product.set(s1productList[0])
 
@@ -72,9 +75,17 @@ class App(Frame):
         Label(text = "Select date").grid(row = 6, column = 0, columnspan = 5)
         self.dateEntry = Entry(self.R, textvariable = self.date)
         self.dateEntry.grid(row = 7, column = 0, columnspan = 5)
+
+        Label(text = "Select latitude and longitude").grid(row = 8, column = 0, columnspan = 5)
+        
+        self.latEntry = Entry(self.R, textvariable = self.lat)
+        self.latEntry.grid(row = 9, column = 0)
+
+        self.longEntry = Entry(self.R, textvariable = self.long)
+        self.longEntry.grid(row = 9, column = 1)
         
         self.okayButton = Button(self.R, text = "Done", command = self.getData)
-        self.okayButton.grid(row = 8, column = 0, columnspan = 5)
+        self.okayButton.grid(row = 10, column = 0, columnspan = 5)
 
     def setForm(self, e):
         self.selectedSentinel = e
@@ -122,7 +133,7 @@ class App(Frame):
             auth = s5pLogin
             url = url1
             
-        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url, self.selectedSentinel)
+        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url, self.selectedSentinel, self.lat.get(), self.long.get())
         
         return
 

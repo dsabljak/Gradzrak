@@ -7,7 +7,7 @@ from Gradzrak.model.DataFile import DataFile
 
 
 class DataCollector:
-    def __init__(self, gas, town, date, login, url, selectedSentinel):
+    def __init__(self, gas, town, date, login, url, selectedSentinel, lat, long):
         self.gas = gas
         self.coords = self.getCoordsFromTown(town)
         self.date = self.makeDate(date)
@@ -15,6 +15,8 @@ class DataCollector:
         self.passw = login[1]
         self.url = url
         self.selectedSentinel = selectedSentinel
+        self.lat = float(lat)
+        self.long = float(long)
         self.download()
         
         return
@@ -35,7 +37,7 @@ class DataCollector:
             for i in range(len(res)):
                 file = DataFile(res[i])
            
-                if file.polygon.coordInsidePolygon(self.coords[0], self.coords[1]):
+                if file.polygon.coordInsidePolygon(self.lat, self.long):
                     downloadLink = file.value
                     brojac += 1
                     print(file.id)
