@@ -7,9 +7,8 @@ from Gradzrak.model.DataFile import DataFile
 
 
 class DataCollector:
-    def __init__(self, gas, town, date, login, url, selectedSentinel, lat, long):
+    def __init__(self, gas, date, login, url, selectedSentinel, lat, long):
         self.gas = gas
-        self.coords = self.getCoordsFromTown(town)
         self.date = self.makeDate(date)
         self.user = login[0]
         self.passw = login[1]
@@ -89,6 +88,3 @@ class DataCollector:
         day = int(tempList[0])
         return date(year, month, day)
 
-    def getCoordsFromTown(self, town):
-        
-        return [45.815399, 15.966568]

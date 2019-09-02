@@ -18,7 +18,7 @@ s1productList = ["SLC", "GRD", "OCN"]
 
 s2productList = ["S2MSI1C", "S2MSI2A", "S2MSI2Ap"]
 
-s3productList = ["OL_1_EFR___", "OL_1_ERR___", "OL_2_LFR___", "OL_2_LRR___", "SR_1_SRA___", "SR_1_SRA_A_", "SR_1_SRA_BS", "SR_2_LAN___"
+s3productList = ["OL_1_EFR___", "OL_1_ERR___", "OL_2_LFR___", "OL_2_WFR___", "OL_2_LRR___", "SR_1_SRA___", "SR_1_SRA_A_", "SR_1_SRA_BS", "SR_2_LAN___"
                  "SL_1_RBT___", "SL_2_LST___", "SY_2_SYN___", "SY_2_V10___", "SY_2_VG1___", "SY_2_VGP___"]
 
 s5pproductList = ["L1B_IR_SIR", "L1B_IR_UVN", "L1B_RA_BD1", "L1B_RA_BD2", "L1B_RA_BD3", "L1B_RA_BD4", "L1B_RA_BD5", "L1B_RA_BD6", "L1B_RA_BD7",
@@ -27,13 +27,14 @@ s5pproductList = ["L1B_IR_SIR", "L1B_IR_UVN", "L1B_RA_BD1", "L1B_RA_BD2", "L1B_R
 
 townList = ["Zagreb", "Split", "Osijek", "Rijeka"]
 
-
+townCoords = {"Zagreb": [45.815399, 15.966568], "Split": [43.508133, 16.440193], "Osijek": [45.5464306, 18.6188185], "Rijeka": [45.3477092, 14.3567736]}
 class App(Frame):
     def __init__(self, root):
         
         super().__init__(root)
         self.R = root
         self.selectedSentinel = 'S1'
+        self.selectedLocationOption = 'town'
         self.R.title("Graf")
         self.grid()
      
@@ -41,20 +42,22 @@ class App(Frame):
 
     
     def makeGUI(self):
+        Label(text = 'Choose Sentinel').grid(row = 0, column = 0, columnspan = 5)
+        
         self.S1Button = Button(self.R, text = "Sentinel_1", command = partial(self.setForm, 'S1'))
-        self.S1Button.grid(row = 0, column = 0)
+        self.S1Button.grid(row = 1, column = 0)
 
         self.S2Button = Button(self.R, text = "Sentinel_2", command = partial(self.setForm, 'S2'))
-        self.S2Button.grid(row = 0, column = 1)
+        self.S2Button.grid(row = 1, column = 1)
 
         self.S3Button = Button(self.R, text = "Sentinel_3", command = partial(self.setForm, 'S3'))
-        self.S3Button.grid(row = 1, column = 0)
+        self.S3Button.grid(row = 2, column = 0)
 
         self.S5Button = Button(self.R, text = "Sentinel_5P", command = partial(self.setForm, 'S5P'))
-        self.S5Button.grid(row = 1, column = 1)
+        self.S5Button.grid(row = 2, column = 1)
         
 
-        Label(text = "Select product").grid(row = 2, column = 0, columnspan = 5)
+        Label(text = "Select product").grid(row = 3, column = 0, columnspan = 5)
 
         self.product = StringVar()
         self.town = StringVar()
@@ -63,30 +66,51 @@ class App(Frame):
         self.long = StringVar()
         
         self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = s1productList, state = "readonly")
-        self.productCombobox.grid(row = 3, column = 0, columnspan = 5)
+        self.productCombobox.grid(row = 4, column = 0, columnspan = 5)
         self.product.set(s1productList[0])
 
-        Label(text = "Select town").grid(row = 4, column = 0, columnspan = 5)
+        Label(text = "Choose town or coordinate entry").grid(row = 5, column = 0, columnspan = 5)
+        self.coordButton = Button(self.R, text = "Coordinate", command = partial(self.setLocationOption, 'entry'))
+        self.coordButton.grid(row = 6, column = 0)
+
+        self.townButton = Button(self.R, text = "Town", command = partial(self.setLocationOption, 'town'))
+        self.townButton.grid(row = 6, column = 1)
+        
+        Label(text = "Select town").grid(row = 7, column = 0, columnspan = 5)
 
         self.townCombobox = ttk.Combobox(self.R, textvariable = self.town, values = townList, state = "readonly")
-        self.townCombobox.grid(row = 5, column = 0, columnspan = 5)
+        self.townCombobox.grid(row = 8, column = 0, columnspan = 5)
         self.town.set(townList[0])
 
-        Label(text = "Select date").grid(row = 6, column = 0, columnspan = 5)
+        Label(text = "Select date").grid(row = 9, column = 0, columnspan = 5)
         self.dateEntry = Entry(self.R, textvariable = self.date)
-        self.dateEntry.grid(row = 7, column = 0, columnspan = 5)
+        self.dateEntry.grid(row = 10, column = 0, columnspan = 5)
 
-        Label(text = "Select latitude and longitude").grid(row = 8, column = 0, columnspan = 5)
+        Label(text = "Select latitude and longitude").grid(row = 11, column = 0, columnspan = 5)
         
-        self.latEntry = Entry(self.R, textvariable = self.lat)
-        self.latEntry.grid(row = 9, column = 0)
+        self.latEntry = Entry(self.R, textvariable = self.lat, state = 'disabled')
+        self.latEntry.grid(row = 12, column = 0)
 
-        self.longEntry = Entry(self.R, textvariable = self.long)
-        self.longEntry.grid(row = 9, column = 1)
+        self.longEntry = Entry(self.R, textvariable = self.long, state = 'disabled')
+        self.longEntry.grid(row = 12, column = 1)
         
         self.okayButton = Button(self.R, text = "Done", command = self.getData)
-        self.okayButton.grid(row = 10, column = 0, columnspan = 5)
+        self.okayButton.grid(row = 13, column = 0, columnspan = 5)
 
+    def setLocationOption(self, e):
+        self.selectedLocationOption = e
+        if e == 'entry':
+            self.townCombobox['state'] = 'disabled'
+            self.latEntry['state'] = 'normal'
+            self.longEntry['state'] = 'normal'
+            
+        else:
+            self.townCombobox['state'] = 'normal'
+            self.latEntry['state'] = 'disabled'
+            self.longEntry['state'] = 'disabled'
+        
+        return
+    
     def setForm(self, e):
         self.selectedSentinel = e
         
@@ -121,21 +145,55 @@ class App(Frame):
         return
         
     def getData(self, e = None):
+        
         if not self.checkDate():
             print("Wrong format")
             return
 
         print(self.product.get())
+
+        
         if self.selectedSentinel in ['S1', 'S2', 'S3']:
             auth = s123Login
             url = url2
         else:
             auth = s5pLogin
             url = url1
-            
-        download = DataCollector(self.product.get(), self.town.get(), self.date.get(), auth, url, self.selectedSentinel, self.lat.get(), self.long.get())
+
+        lat, long = self.getLocation()
+
+        print(lat, long)
+        download = DataCollector(self.product.get(), self.date.get(), auth, url, self.selectedSentinel, lat, long)
         
         return
+    
+    def checkLocation(self, lat, long):
+       
+        
+        if not(lat.isdigit()) or not(long.isdigit()):
+            return False
+
+        if lat == None or long == None:
+            return False
+        
+        lat = float(lat)
+        long = float(long)
+        if long <= -180 or long >= 180:
+            return False
+        
+        if lat <= -90 or lat >= 90:
+            return False
+        
+        return True
+        
+    def getLocation(self):
+        if self.selectedLocationOption  == 'entry':
+            if not self.checkLocation(self.lat.get(), self.long.get()):
+                print("Wrong format")
+            else:
+                return float(self.lat.get()), float(self.long.get())
+        else:
+            return townCoords[self.town.get()][0], townCoords[self.town.get()][1]
 
     def checkDate(self):
         date = self.date.get()
@@ -151,17 +209,8 @@ class App(Frame):
 
         if len(day) != 2 or len(month) != 2 or len(year) != 4:
             return false
-        for i in day:
-                if i not in numbers:
+        if not day.isdigit() or not month.isdigit() or not year.isdigit():
                     return False
-                
-        for j in month:
-            if j not in numbers:
-                return False
-                
-        for j in year:
-            if j not in numbers:
-                return False
             
         if int(month) > 12 or int(month) < 1:
             return False
