@@ -1,9 +1,11 @@
 ## Class which gets parameters from GUI and formats them into filter
 
 import time
+from netCDF4 import Dataset
 import requests
 from datetime import date
 from model.DataFile import DataFile
+import os
 
 
 
@@ -22,6 +24,7 @@ class DataCollector:
         return
 
     def download(self):
+
         filterString = self.makeFilterString(self.gas, self.date)
         brojac = 0
         skip = 0
@@ -50,23 +53,31 @@ class DataCollector:
                 #print("Idem dalje..")
             skip += 50
 
-        if file.size > 200:
-            print("Prevelik file")
+        if self.selectedSentinel == 'S5P':
+            fileType = '.nc'
         else:
-            print("Zapocinjem skidanje")
-            initial = time.time()
-            downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
-            final = time.time() - initial
-            print("Elapsed time: " + str(final) + " s")
+            fileType = '.zip'
 
-            if self.selectedSentinel == 'S5P':
-                fileType = '.nc'
+        if os.path.isfile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
+            print("File exists")
+
+        else:
+
+            if file.size > 200:
+                print("Prevelik file")
             else:
-                fileType = '.zip'
+                print("Zapocinjem skidanje")
+                initial = time.time()
+                downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
+                final = time.time() - initial
+                print("Elapsed time: " + str(final) + " s")
 
-            with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
-                fout.write(downloadreq.content)
-                print("Skinuto!")
+                with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
+                    fout.write(downloadreq.content)
+                    print("Skinuto!")
+
+        rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "w", format="NETCDF4")
+        print(rootgrp.data_model)
     
 ##        print(file.id)
 ##        print(file.name)
