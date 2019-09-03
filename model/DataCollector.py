@@ -1,5 +1,6 @@
 ## Class which gets parameters from GUI and formats them into filter
 
+import time
 import requests
 from datetime import date
 from model.DataFile import DataFile
@@ -42,24 +43,28 @@ class DataCollector:
                     print(file.id)
                     print(file.name)
                     print(file.polygon.polygonCoordinates)
-                    print(str(file.size) + 'MB')
+                    print(str(file.size) + ' MB')
                     break
                     
                     #print(i, file = open('ispis.txt', 'w'))
                 #print("Idem dalje..")
             skip += 50
 
-        downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
-        if self.selectedSentinel == 'S5P':
-            fileType = '.nc'
-        else:
-            fileType = '.zip'
-            
         if file.size > 200:
             print("Prevelik file")
-        else:    
-            with open(f"../downloaded_data/{file.name}{fileType}", "wb") as fout:
-                print("Zapocinjem skidanje")
+        else:
+            print("Zapocinjem skidanje")
+            initial = time.time()
+            downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
+            final = time.time() - initial
+            print("Elapsed time: " + str(final) + " s")
+
+            if self.selectedSentinel == 'S5P':
+                fileType = '.nc'
+            else:
+                fileType = '.zip'
+
+            with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
                 fout.write(downloadreq.content)
                 print("Skinuto!")
     
