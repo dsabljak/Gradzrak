@@ -14,7 +14,7 @@ class Constants():
 
     s2productList = ["S2MSI1C", "S2MSI2A", "S2MSI2Ap"]
 
-    s3productList = ["OL_1_EFR___", "OL_1_ERR___", "OL_2_LFR___", "OL_2_WFR___", "OL_2_LRR___", "SR_1_SRA___", "SR_1_SRA_A_", "SR_1_SRA_BS", "SR_2_LAN___"
+    s3productList = ["OL_1_EFR___", "OL_1_ERR___", "OL_2_LFR___", "OL_2_WFR___", "OL_2_WRR___", "OL_2_LRR___", "SR_1_SRA___", "SR_1_SRA_A_", "SR_1_SRA_BS", "SR_2_LAN___"
                      "SL_1_RBT___", "SL_2_LST___", "SY_2_SYN___", "SY_2_V10___", "SY_2_VG1___", "SY_2_VGP___"]
 
     s5pproductList = ["L1B_IR_SIR", "L1B_IR_UVN", "L1B_RA_BD1", "L1B_RA_BD2", "L1B_RA_BD3", "L1B_RA_BD4", "L1B_RA_BD5", "L1B_RA_BD6", "L1B_RA_BD7",
