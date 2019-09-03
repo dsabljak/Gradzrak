@@ -5,39 +5,17 @@ from tkinter import *
 from tkinter import ttk
 from model.DataCollector import DataCollector
 from functools import partial
+from Gradzrak.model.Constants import Constants
 
-url1    = "https://s5phub.copernicus.eu/dhus/odata/v1/Products"
-url2    = "https://scihub.copernicus.eu/apihub/odata/v1/Products"
-
-s5pLogin = ("s5pguest", "s5pguest")
-s123Login = ("dsabljak", "Jabuka!=42")
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-gasList = ["CO2", "CO"]
-
-s1productList = ["SLC", "GRD", "OCN"]
-
-s2productList = ["S2MSI1C", "S2MSI2A", "S2MSI2Ap"]
-
-s3productList = ["OL_1_EFR___", "OL_1_ERR___", "OL_2_LFR___", "OL_2_WFR___", "OL_2_LRR___", "SR_1_SRA___", "SR_1_SRA_A_", "SR_1_SRA_BS", "SR_2_LAN___"
-                 "SL_1_RBT___", "SL_2_LST___", "SY_2_SYN___", "SY_2_V10___", "SY_2_VG1___", "SY_2_VGP___"]
-
-s5pproductList = ["L1B_IR_SIR", "L1B_IR_UVN", "L1B_RA_BD1", "L1B_RA_BD2", "L1B_RA_BD3", "L1B_RA_BD4", "L1B_RA_BD5", "L1B_RA_BD6", "L1B_RA_BD7",
-                  "L1B_RA_BD8", "L2__AER_AI", "L2__CH4___", "L2__CLOUD_", "L2__CO____", "L2__HCHO__", "L2__NO2___", "L2__NP_BD3", "L2__NP_BD6",
-                  "L2__NP_BD7", "L2__O3_TCL", "L2__O3____", "L2__SO2___"]
-
-townList = ["Zagreb", "Split", "Osijek", "Rijeka"]
-
-townCoords = {"Zagreb": [45.815399, 15.966568], "Split": [43.508133, 16.440193], "Osijek": [45.5464306, 18.6188185], "Rijeka": [45.3477092, 14.3567736]}
 class App(Frame):
+    
     def __init__(self, root):
-        
         super().__init__(root)
         self.R = root
         self.selectedSentinel = 'S1'
         self.selectedLocationOption = 'town'
         self.R.title("Graf")
         self.grid()
-     
         self.makeGUI()
 
     
@@ -65,9 +43,9 @@ class App(Frame):
         self.lat = StringVar()
         self.long = StringVar()
         
-        self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = s1productList, state = "readonly")
+        self.productCombobox = ttk.Combobox(self.R, textvariable = self.product, values = Constants.s1productList, state = "readonly")
         self.productCombobox.grid(row = 4, column = 0, columnspan = 5)
-        self.product.set(s1productList[0])
+        self.product.set(Constants.s1productList[0])
 
         Label(text = "Choose town or coordinate entry").grid(row = 5, column = 0, columnspan = 5)
         self.coordButton = Button(self.R, text = "Coordinate", command = partial(self.setLocationOption, 'entry'))
@@ -78,9 +56,9 @@ class App(Frame):
         
         Label(text = "Select town").grid(row = 7, column = 0, columnspan = 5)
 
-        self.townCombobox = ttk.Combobox(self.R, textvariable = self.town, values = townList, state = "readonly")
+        self.townCombobox = ttk.Combobox(self.R, textvariable = self.town, values = Constants.townList, state = "readonly")
         self.townCombobox.grid(row = 8, column = 0, columnspan = 5)
-        self.town.set(townList[0])
+        self.town.set(Constants.townList[0])
 
         Label(text = "Select date").grid(row = 9, column = 0, columnspan = 5)
         self.dateEntry = Entry(self.R, textvariable = self.date)
@@ -99,11 +77,11 @@ class App(Frame):
 
     def setLocationOption(self, e):
         self.selectedLocationOption = e
+        
         if e == 'entry':
             self.townCombobox['state'] = 'disabled'
             self.latEntry['state'] = 'normal'
             self.longEntry['state'] = 'normal'
-            
         else:
             self.townCombobox['state'] = 'normal'
             self.latEntry['state'] = 'disabled'
@@ -122,43 +100,46 @@ class App(Frame):
             self.setS3()
         else:
             self.setS5P()
+            
         return
 
     def setS1(self):
-        self.productCombobox['values'] = s1productList
-        self.product.set(s1productList[0])
+        self.productCombobox['values'] = Constants.s1productList
+        self.product.set(Constants.s1productList[0])
+        
         return
 
     def setS2(self):
-        self.productCombobox['values'] = s2productList
-        self.product.set(s2productList[0])
+        self.productCombobox['values'] = Constants.s2productList
+        self.product.set(Constants.s2productList[0])
+        
         return
 
     def setS3(self):
-        self.productCombobox['values'] = s3productList
-        self.product.set(s3productList[0])
+        self.productCombobox['values'] = Constants.s3productList
+        self.product.set(Constants.s3productList[0])
+        
         return
 
     def setS5P(self):
-        self.productCombobox['values'] = s5pproductList
-        self.product.set(s5pproductList[0])
+        self.productCombobox['values'] = Constants.s5pproductList
+        self.product.set(Constants.s5pproductList[0])
+        
         return
         
     def getData(self, e = None):
-        
         if not self.checkDate():
             print("Wrong format")
+        
             return
 
         print(self.product.get())
-
-        
         if self.selectedSentinel in ['S1', 'S2', 'S3']:
-            auth = s123Login
-            url = url2
+            auth = Constants.s123Login
+            url = Constants.url2
         else:
-            auth = s5pLogin
-            url = url1
+            auth = Constants.s5pLogin
+            url = Constants.url1
 
         lat, long = self.getLocation()
 
@@ -168,20 +149,32 @@ class App(Frame):
         return
     
     def checkLocation(self, lat, long):
-       
-        
-        if not(lat.isdigit()) or not(long.isdigit()):
-            return False
-
+        if lat[0] == '-' :
+            if not(lat[1::].isdigit()) or not(long.isdigit()):
+                print("slovo il prazno a minus")
+                return False
+            
+        elif long[0] == '-' :
+            if not(lat.isdigit()) or not(long[1::].isdigit()):
+                print("slovo il prazno a minus")
+                return False
+            
+        elif not(lat.isdigit()) or not(long.isdigit()):
+                print("slovo il prazno")
+                return False
+            
         if lat == None or long == None:
+            print(None)
             return False
         
         lat = float(lat)
         long = float(long)
         if long <= -180 or long >= 180:
+            print("Long cudan")
             return False
         
         if lat <= -90 or lat >= 90:
+            print("Lat cudan")
             return False
         
         return True
@@ -193,14 +186,17 @@ class App(Frame):
             else:
                 return float(self.lat.get()), float(self.long.get())
         else:
-            return townCoords[self.town.get()][0], townCoords[self.town.get()][1]
+            return Constants.townCoords[self.town.get()][0], Constants.townCoords[self.town.get()][1]
 
     def checkDate(self):
         date = self.date.get()
+        
         if date[2] != '.' or date[5] != '.':
             return False
+        
         if len(date) != 10:
             return False
+        
         date = date.split('.')
         print(date)
         day = date[0]
@@ -209,15 +205,16 @@ class App(Frame):
 
         if len(day) != 2 or len(month) != 2 or len(year) != 4:
             return false
+        
         if not day.isdigit() or not month.isdigit() or not year.isdigit():
                     return False
             
         if int(month) > 12 or int(month) < 1:
             return False
+        
         return True
 
-    def postoji(self):
-        return
+
     
 root = Tk()
 app = App(root)
