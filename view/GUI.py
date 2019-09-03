@@ -3,7 +3,7 @@
 
 from tkinter import *
 from tkinter import ttk
-from Gradzrak.model.DataCollector import DataCollector
+from model.DataCollector import DataCollector
 from functools import partial
 
 url1    = "https://s5phub.copernicus.eu/dhus/odata/v1/Products"

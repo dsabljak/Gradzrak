@@ -1,4 +1,4 @@
-from Gradzrak.model.GeoGeometry import Gml
+from model.GeoGeometry import Gml
 class DataFile:
 
     def __init__(self, data):

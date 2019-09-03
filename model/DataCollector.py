@@ -2,7 +2,7 @@
 
 import requests
 from datetime import date
-from Gradzrak.model.DataFile import DataFile
+from model.DataFile import DataFile
 
 
 
