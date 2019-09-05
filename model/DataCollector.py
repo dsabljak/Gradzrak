@@ -61,6 +61,11 @@ class DataCollector:
         if os.path.isfile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
             print("File exists")
 
+            rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
+            print(rootgrp.variables)
+            for attr in rootgrp.ncattrs():
+                print(attr, "=", getattr(rootgrp, attr))
+
         else:
 
             if file.size > 200:
@@ -76,9 +81,11 @@ class DataCollector:
                     fout.write(downloadreq.content)
                     print("Skinuto!")
 
-        rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "w", format="NETCDF4")
-        print(rootgrp.data_model)
-    
+                rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
+                print(rootgrp.variables)
+                for attr in rootgrp.ncattrs():
+                    print(attr, "=", getattr(rootgrp, attr))
+
 ##        print(file.id)
 ##        print(file.name)
 ##        print(file.polygon.polygonCoordinates)
