@@ -4,7 +4,7 @@ import time
 from netCDF4 import Dataset
 import requests
 from datetime import date
-from model.DataFile import DataFile
+from Gradzrak.model.DataFile import DataFile
 import os
 
 
@@ -58,7 +58,7 @@ class DataCollector:
         else:
             fileType = '.zip'
 
-        if os.path.isfile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
+        if os.path.isfile(f"..\downloaded_data\{file.name}{fileType}") == True:
             print("File exists")
 
         else:
@@ -72,11 +72,12 @@ class DataCollector:
                 final = time.time() - initial
                 print("Elapsed time: " + str(final) + " s")
 
-                with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
+                with open(f"..\downloaded_data\{file.name}{fileType}", "wb") as fout:
                     fout.write(downloadreq.content)
                     print("Skinuto!")
 
-        rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "w", format="NETCDF4")
+        rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r", format="NETCDF4")
+        
         print(rootgrp.data_model)
     
 ##        print(file.id)

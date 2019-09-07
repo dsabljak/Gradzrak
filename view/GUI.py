@@ -3,7 +3,7 @@
 
 from tkinter import *
 from tkinter import ttk
-from model.DataCollector import DataCollector
+from Gradzrak.model.DataCollector import DataCollector
 from functools import partial
 from Gradzrak.model.Constants import Constants
 
