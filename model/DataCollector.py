@@ -61,15 +61,19 @@ class DataCollector:
         else:
             fileType = '.zip'
 
-        if os.path.exists(f"..\downloaded_data\{file.name}{fileType}") == True:
+        if os.path.exists(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
             print("File exists")
 
             if fileType == ".nc":
-                rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
+                rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
                 DataAnalizer(rootgrp)
             elif fileType == ".zip":
-                with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
-                    zipObj.extractall()
+                with ZipFile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r") as zipObj:
+                    print("unzipping")
+                    zipObj.extractall("/home/filip/git/Copernicus/Gradzrak/model/downloaded_data")
+                    print("unzipped")
+            else:
+                print("Not a supported file type")
 
         else:
 
@@ -82,18 +86,21 @@ class DataCollector:
                 final = time.time() - initial
                 print("Elapsed time: " + str(final) + " s")
 
-                with open(f"..\downloaded_data\{file.name}{fileType}", "wb") as fout:
+                with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
                     fout.write(downloadreq.content)
                     print("Skinuto!")
                     if fileType == ".nc":
-                        rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
+                        rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
                         DataAnalizer(rootgrp)
                     elif fileType == ".zip":
-                        with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
-                            zipObj.extractall()
+                        with ZipFile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r") as zipObj:
+                            print("unzipping")
+                            zipObj.extractall("/home/filip/git/Copernicus/Gradzrak/model/downloaded_data")
+                            print("unzipped")
+                    else:
+                        print("Not a supported file type")
 
-
-##        print(file.id)
+    ##        print(file.id)
 ##        print(file.name)
 ##        print(file.polygon.polygonCoordinates)
 ##        req = requests.get(url, auth=(user, passw), params={'$format': 'json' , '$filter': filterString, '$skip': 49})
