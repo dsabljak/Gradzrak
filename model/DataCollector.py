@@ -1,10 +1,13 @@
 ## Class which gets parameters from GUI and formats them into filter
 
 import time
+from zipfile import ZipFile
+
 from netCDF4 import Dataset
 import requests
 from datetime import date
-from Gradzrak.model.DataFile import DataFile
+from model.DataFile import DataFile
+from model.DataAnalizer import *
 import os
 
 
@@ -58,13 +61,15 @@ class DataCollector:
         else:
             fileType = '.zip'
 
-        if os.path.isfile(f"..\downloaded_data\{file.name}{fileType}") == True:
+        if os.path.exists(f"..\downloaded_data\{file.name}{fileType}") == True:
             print("File exists")
 
-            rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
-            print(rootgrp.variables)
-            for attr in rootgrp.ncattrs():
-                print(attr, "=", getattr(rootgrp, attr))
+            if fileType == ".nc":
+                rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
+                DataAnalizer(rootgrp)
+            elif fileType == ".zip":
+                with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
+                    zipObj.extractall()
 
         else:
 
@@ -80,6 +85,12 @@ class DataCollector:
                 with open(f"..\downloaded_data\{file.name}{fileType}", "wb") as fout:
                     fout.write(downloadreq.content)
                     print("Skinuto!")
+                    if fileType == ".nc":
+                        rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
+                        DataAnalizer(rootgrp)
+                    elif fileType == ".zip":
+                        with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
+                            zipObj.extractall()
 
 
 ##        print(file.id)
