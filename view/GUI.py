@@ -3,9 +3,11 @@
 
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from Gradzrak.model.DataCollector import DataCollector
 from functools import partial
-from model.Constants import Constants
+from Gradzrak.model.Constants import Constants
+
 
 class App(Frame):
     
@@ -129,6 +131,7 @@ class App(Frame):
         
     def getData(self, e = None):
         if not self.checkDate():
+            messagebox.showinfo("Error", "Date format must be dd.mm.yyyy \nMonth must be between 1 and 12")
             print("Wrong format")
         
             return
@@ -140,8 +143,11 @@ class App(Frame):
         else:
             auth = Constants.s5pLogin
             url = Constants.url1
-
-        lat, long = self.getLocation()
+            
+        try:
+            lat, long = self.getLocation()
+        except:
+            return
 
         print(lat, long)
         download = DataCollector(self.product.get(), self.date.get(), auth, url, self.selectedSentinel, lat, long)
@@ -149,6 +155,9 @@ class App(Frame):
         return
     
     def checkLocation(self, lat, long):
+        if lat == '' or long == '':
+            print("slovo il prazno a minus")
+            return False
         if lat[0] == '-' :
             if not(lat[1::].isdigit()) or not(long.isdigit()):
                 print("slovo il prazno a minus")
@@ -182,6 +191,7 @@ class App(Frame):
     def getLocation(self):
         if self.selectedLocationOption  == 'entry':
             if not self.checkLocation(self.lat.get(), self.long.get()):
+                messagebox.showinfo("Error", "Latitude must be between -90 and 90.\n Longitude must be between -180 and 180.\n Both must be float or integer. ")
                 print("Wrong format")
             else:
                 return float(self.lat.get()), float(self.long.get())

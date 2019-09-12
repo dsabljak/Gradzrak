@@ -2,12 +2,12 @@
 
 import time
 from zipfile import ZipFile
-
+from tkinter import messagebox
 from netCDF4 import Dataset
 import requests
 from datetime import date
-from model.DataFile import DataFile
-from model.DataAnalizer import *
+from Gradzrak.model.DataFile import DataFile
+from Gradzrak.model.DataAnalizer import *
 import os
 
 
@@ -61,16 +61,19 @@ class DataCollector:
         else:
             fileType = '.zip'
 
-        if os.path.exists(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
+        if os.path.exists(f"..\downloaded_data\{file.name}{fileType}") == True:
+            messagebox.showinfo("Info", "File exists")
             print("File exists")
 
             if fileType == ".nc":
-                rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
+                rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
                 DataAnalizer(rootgrp)
             elif fileType == ".zip":
-                with ZipFile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r") as zipObj:
+                with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
+                    messagebox.showinfo("Info", "Unzziping...")
                     print("unzipping")
-                    zipObj.extractall("/home/filip/git/Copernicus/Gradzrak/model/downloaded_data")
+                    zipObj.extractall("..\downloaded_data")
+                    messagebox.showinfo("Info", "Unzziped!")
                     print("unzipped")
             else:
                 print("Not a supported file type")
@@ -80,27 +83,32 @@ class DataCollector:
             if file.size > 200:
                 print("Prevelik file")
             else:
-                print("Zapocinjem skidanje")
-                initial = time.time()
-                downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
-                final = time.time() - initial
-                print("Elapsed time: " + str(final) + " s")
+                if messagebox.askyesno("Info", "File found. Do you want to download it?"):
+                    print("Zapocinjem skidanje")
+                    initial = time.time()
+                    downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
+                    final = time.time() - initial
+                    print("Elapsed time: " + str(final) + " s")
+                    
 
-                with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "wb") as fout:
-                    fout.write(downloadreq.content)
-                    print("Skinuto!")
-                    if fileType == ".nc":
-                        rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
-                        DataAnalizer(rootgrp)
-                    elif fileType == ".zip":
-                        with ZipFile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r") as zipObj:
-                            print("unzipping")
-                            zipObj.extractall("/home/filip/git/Copernicus/Gradzrak/model/downloaded_data")
-                            print("unzipped")
-                    else:
-                        print("Not a supported file type")
+                    with open(f"..\downloaded_data\{file.name}{fileType}", "wb") as fout:
+                        fout.write(downloadreq.content)
+                        messagebox.showinfo("Info", "Downloaded!\n Elapsed time: " + str(final) + " s")
+                        print("Skinuto!")
+                        if fileType == ".nc":
+                            rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
+                            DataAnalizer(rootgrp)
+                        elif fileType == ".zip":
+                            with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
+                                messagebox.showinfo("Info", "Unzziping...")
+                                print("unzipping")
+                                zipObj.extractall("..\downloaded_data")
+                                messagebox.showinfo("Info", "Unzziped!")
+                                print("unzipped")
+                        else:
+                            print("Not a supported file type")
 
-    ##        print(file.id)
+
 ##        print(file.name)
 ##        print(file.polygon.polygonCoordinates)
 ##        req = requests.get(url, auth=(user, passw), params={'$format': 'json' , '$filter': filterString, '$skip': 49})
