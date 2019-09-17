@@ -62,7 +62,7 @@ class DataCollector:
             fileType = '.zip'
 
         if os.path.exists(f"..\downloaded_data\{file.name}{fileType}") == True:
-            messagebox.showinfo("Info", "File exists")
+            messagebox.showinfo("Info", f"File ({self.gas}-{self.date}) {file.name}{fileType} exists")
             print("File exists")
 
             if fileType == ".nc":
@@ -70,10 +70,10 @@ class DataCollector:
                 DataAnalizer(rootgrp)
             elif fileType == ".zip":
                 with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
-                    messagebox.showinfo("Info", "Unzziping...")
+                    messagebox.showinfo("Info", f"Unzziping ({self.gas}-{self.date}) {file.name}{fileType}...")
                     print("unzipping")
                     zipObj.extractall("..\downloaded_data")
-                    messagebox.showinfo("Info", "Unzziped!")
+                    messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType} unzziped!")
                     print("unzipped")
             else:
                 print("Not a supported file type")
@@ -83,8 +83,8 @@ class DataCollector:
             if file.size > 200:
                 print("Prevelik file")
             else:
-                if messagebox.askyesno("Info", "File found. Do you want to download it?"):
-                    print("Zapocinjem skidanje")
+                if messagebox.askyesno("Info", f"File found.\n ({self.gas}-{self.date}) {file.name}{fileType}\nDo you want to download it?"):
+                    print(f"Zapocinjem skidanje ({self.gas}-{self.date}) {file.name}{fileType}")
                     initial = time.time()
                     downloadreq = requests.get(downloadLink, auth = (self.user, self.passw))
                     final = time.time() - initial
@@ -93,17 +93,17 @@ class DataCollector:
 
                     with open(f"..\downloaded_data\{file.name}{fileType}", "wb") as fout:
                         fout.write(downloadreq.content)
-                        messagebox.showinfo("Info", "Downloaded!\n Elapsed time: " + str(final) + " s")
-                        print("Skinuto!")
+                        messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType} downloaded!\n Elapsed time: " + str(final) + " s")
+                        print(f"({self.gas}-{self.date}) {file.name}{fileType} skinuto!")
                         if fileType == ".nc":
                             rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
                             DataAnalizer(rootgrp)
                         elif fileType == ".zip":
                             with ZipFile(f"..\downloaded_data\{file.name}{fileType}", "r") as zipObj:
-                                messagebox.showinfo("Info", "Unzziping...")
+                                messagebox.showinfo("Info", f"Unzziping ({self.gas}-{self.date}) {file.name}{fileType}...")
                                 print("unzipping")
                                 zipObj.extractall("..\downloaded_data")
-                                messagebox.showinfo("Info", "Unzziped!")
+                                messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType} unzziped!")
                                 print("unzipped")
                         else:
                             print("Not a supported file type")
