@@ -1,6 +1,6 @@
 ##App for pulling Copernicus data from the Hub using parameters which the user
 ##puts. 
-
+import threading
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -74,9 +74,14 @@ class App(Frame):
         self.longEntry = Entry(self.R, textvariable = self.long, state = 'disabled')
         self.longEntry.grid(row = 12, column = 1)
         
-        self.okayButton = Button(self.R, text = "Done", command = self.getData)
+        self.okayButton = Button(self.R, text = "Done", command = partial(self.createThread, ''))
         self.okayButton.grid(row = 13, column = 0, columnspan = 5)
 
+    def createThread(self, e):
+        newThread = threading.Thread(target = self.getData)
+        newThread.start()
+        return
+    
     def setLocationOption(self, e):
         self.selectedLocationOption = e
         
