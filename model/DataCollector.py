@@ -6,8 +6,8 @@ from tkinter import messagebox
 from netCDF4 import Dataset
 import requests
 from datetime import date
-from model.DataFile import DataFile
-from model.DataAnalizer import *
+from Gradzrak.model.DataFile import DataFile
+from Gradzrak.model.DataAnalizer import *
 import os
 
 
@@ -69,12 +69,12 @@ class DataCollector:
             fileType = '.SEN3'
             fileType2 = '.zip'
 
-        if os.path.exists(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}") == True:
+        if os.path.exists(f"..\downloaded_data\{file.name}{fileType}") == True:
             messagebox.showinfo("Info", f"File ({self.gas}-{self.date}) {file.name}{fileType} exists")
             print("File exists")
 
             if fileType == ".nc":
-                rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
+                rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
                 DataAnalizer(rootgrp)
 
         else:
@@ -90,22 +90,22 @@ class DataCollector:
                     print("Elapsed time: " + str(final) + " s")
                     
 
-                    with open(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType2}", "wb") as fout:
+                    with open(f"..\downloaded_data\{file.name}{fileType2}", "wb") as fout:
                         fout.write(downloadreq.content)
                         messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType} downloaded!\n Elapsed time: " + str(final) + " s")
                         print(f"({self.gas}-{self.date}) {file.name}{fileType} skinuto!")
                         if fileType == ".nc":
-                            rootgrp = Dataset(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType}", "r")
+                            rootgrp = Dataset(f"..\downloaded_data\{file.name}{fileType}", "r")
                             DataAnalizer(rootgrp)
                         elif fileType2 ==".zip":
-                            with ZipFile(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType2}", "r") as zipObj:
+                            with ZipFile(f"..\downloaded_data\{file.name}{fileType2}", "r") as zipObj:
                                 messagebox.showinfo("Info", f"Unzziping ({self.gas}-{self.date}) {file.name}{fileType2}...")
                                 print("unzipping")
-                                zipObj.extractall("/home/filip/git/Copernicus/Gradzrak/model/downloaded_data")
+                                zipObj.extractall("..\downloaded_data")
                                 messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType2} unzziped!")
                                 print("unzipped")
 
-                                os.remove(f"/home/filip/git/Copernicus/Gradzrak/model/downloaded_data/{file.name}{fileType2}")
+                                os.remove(f"..\downloaded_data\{file.name}{fileType2}")
                                 messagebox.showinfo("Info", f"({self.gas}-{self.date}) {file.name}{fileType2} deleted!")
 
                         else:

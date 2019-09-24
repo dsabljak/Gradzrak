@@ -1,5 +1,6 @@
 from netCDF4 import Dataset
-
+import numpy as np
+import matplotlib.pyplot as plt
 class DataAnalizer():
 
     def __init__(self, rootgrp):
@@ -11,9 +12,11 @@ class DataAnalizer():
 
         print("Beginning analysis")
         # nc = "cartesian_tx.nc"
-        # rootgrp = Dataset("cartesian_tx.nc", "r", format="NETCDF4")
-        # print(rootgrp.dimensions['columns'])
-        print(self.rootgrp.variables)
-        for attr in self.rootgrp.ncattrs():
-            print(attr, "=", getattr(self.rootgrp, attr))
+        dataset = Dataset(self.rootgrp, "r", format="NETCDF4")
 
+        data = np.array(dataset.variables['OTCI'])
+
+        plt.imshow(data,cmap='viridis', interpolation='nearest')
+        plt.colorbar()
+
+        plt.show()

@@ -7,7 +7,7 @@ from tkinter import messagebox
 from Gradzrak.model.DataCollector import DataCollector
 from functools import partial
 from Gradzrak.model.Constants import Constants
-
+from Gradzrak.model.DataAnalizer import DataAnalizer
 
 class App(Frame):
     
@@ -77,6 +77,12 @@ class App(Frame):
         self.okayButton = Button(self.R, text = "Done", command = partial(self.createThread, ''))
         self.okayButton.grid(row = 13, column = 0, columnspan = 5)
 
+        self.plotButton = Button(self.R, text = "Plot", command = partial(self.createPlot, ''))
+        self.plotButton.grid(row = 14, column = 0, columnspan = 5)
+    
+    def createPlot(self, e):
+        a = DataAnalizer('..\model\otci.nc')
+        return
     def createThread(self, e):
         newThread = threading.Thread(target = self.getData)
         newThread.start()
@@ -156,6 +162,7 @@ class App(Frame):
 
         print(lat, long)
         download = DataCollector(self.product.get(), self.date.get(), auth, url, self.selectedSentinel, lat, long)
+        
         
         return
     
